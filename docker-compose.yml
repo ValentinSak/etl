@@ -1,0 +1,38 @@
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  airflow:
+    image: apache/airflow:2.7.3
+    container_name: airflow
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    ports:
+      - "8080:8080"
+    volumes:
+      - /Users/valentinsak/PycharmProjects/etl/dags:/opt/airflow/dags
+      - /Users/valentinsak/PycharmProjects/etl/logs:/opt/airflow/logs
+      - /Users/valentinsak/PycharmProjects/etl/plugins:/opt/airflow/plugins
+    entrypoint: /bin/bash -c "airflow db init && airflow webserver & airflow scheduler"
+
+volumes:
+  postgres_data:
+  airflow_dags:
+  airflow_logs:
+  airflow_plugins:
