@@ -24,6 +24,7 @@ services:
       - "5433:5432"
     volumes:
       - postgres_etl_data:/var/lib/postgresql/data
+      - ./import_files:/data
 
   airflow:
     image: apache/airflow:2.7.3
@@ -33,17 +34,32 @@ services:
       - postgres
       - postgres_etl
     environment:
+      _AIRFLOW_DB_MIGRATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: airflow
+      _AIRFLOW_WWW_USER_PASSWORD: airflow
+      DEFAULT_PASSWORD: admin
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-      AIRFLOW__ETL__SQL_ALCHEMY_CONN: postgresql+psycopg2://etl_user:etl_password@postgres_etl/etl_db
+      ETL_DB_CONN_ID: etl_db_con
     ports:
       - "8080:8080"
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
-    entrypoint: /bin/bash -c "airflow db init && airflow webserver & airflow scheduler"
+    entrypoint: >
+      /bin/bash -c "airflow db migrate &&
+      sleep 10 &&
+      airflow connections get 'etl_db_con' ||
+      airflow connections add 'etl_db_con' 
+      --conn-type 'Postgres' 
+      --conn-host 'postgres_etl' 
+      --conn-schema 'etl_db' 
+      --conn-login 'etl_user' 
+      --conn-password 'etl_password' 
+      --conn-port '5432' &&
+      airflow webserver & airflow scheduler"
 
 volumes:
   postgres_data:
