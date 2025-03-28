@@ -23,7 +23,8 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres_etl_data:/var/lib/postgresql/data
+      - ./etl_db/postgres_etl_data:/var/lib/postgresql/data
+      - ./etl_db/procedures:/docker-entrypoint-initdb.d
       - ./import_files:/data
 
   airflow:
