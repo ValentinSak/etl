@@ -70,7 +70,27 @@ def find_project_root(starting_path=None):
     raise FileNotFoundError("Could not find the project root.")
 
 
-if __name__ == '__main__':
-    copy_file_to_psql('etl', 'stores', 'stores.csv')
-    # conn = get_etl_connection()
-    # print("Connection successful:", conn)
+def run_fill_stores_procedure():
+    sql = 'CALL etl.fill_stores();'
+    print(sql)
+    execute_statement_without_result(sql)
+
+
+def run_fill_sales_procedure():
+    sql = 'CALL etl.fill_sales();'
+    print(sql)
+    execute_statement_without_result(sql)
+
+
+def run_fill_orders_procedure():
+    sql = 'CALL etl.fill_orders();'
+    print(sql)
+    execute_statement_without_result(sql)
+
+
+def run_fill_products_procedure():
+    sql = 'CALL etl.fill_products();'
+    print(sql)
+    execute_statement_without_result(sql)
+
+# if __name__ == '__main__':

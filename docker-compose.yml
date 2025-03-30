@@ -25,7 +25,11 @@ services:
     volumes:
       - ./etl_db/postgres_etl_data:/var/lib/postgresql/data
       - ./etl_db/procedures:/docker-entrypoint-initdb.d
-      - ./import_files:/data
+      - ./etl_db/import_files:/data
+      - ./etl_db/sql_scripts:/sql_scripts
+      - ./etl_db/run_on_start.sh:/run_on_start.sh
+    entrypoint:
+      ["/bin/bash", "/run_on_start.sh"]
 
   airflow:
     image: apache/airflow:2.7.3
@@ -42,7 +46,11 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-      ETL_DB_CONN_ID: etl_db_con
+      ETL_DB_NAME: etl_db
+      ETL_DB_HOST: postgres_etl
+      ETL_DB_PORT: 5432
+      ETL_DB_USER: etl_user
+      ETL_DB_PASSWORD: etl_password
     ports:
       - "8080:8080"
     volumes:
@@ -51,17 +59,9 @@ services:
       - ./airflow/plugins:/opt/airflow/plugins
     entrypoint: >
       /bin/bash -c "airflow db migrate &&
-      sleep 10 &&
-      airflow connections get 'etl_db_con' ||
-      airflow connections add 'etl_db_con' 
-      --conn-type 'Postgres' 
-      --conn-host 'postgres_etl' 
-      --conn-schema 'etl_db' 
-      --conn-login 'etl_user' 
-      --conn-password 'etl_password' 
-      --conn-port '5432' &&
+      airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com &&
+#      airflow dags trigger fill_tables &&
       airflow webserver & airflow scheduler"
-
 volumes:
   postgres_data:
   postgres_etl_data:
