@@ -1,6 +1,8 @@
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.hooks.base import BaseHook
-
+from datetime import datetime, timedelta
+import json
+import random
 import psycopg2
 from dotenv import load_dotenv
 import os
@@ -93,4 +95,22 @@ def run_fill_products_procedure():
     print(sql)
     execute_statement_without_result(sql)
 
-# if __name__ == '__main__':
+
+def get_last_row_dict(csv_file: str) -> dict:
+    headers = get_csv_headers(csv_file)
+    with open(csv_file, "rb") as file:
+        file.seek(-2, os.SEEK_END)
+        while file.read(1) != b'\n':
+            file.seek(-2, os.SEEK_CUR)
+        last_row = file.readline().decode().strip()
+    last_row_values = last_row.split(',')
+    last_row_dict = dict(zip(headers, last_row_values))
+
+    return last_row_dict
+
+
+def get_csv_headers(csv_file: str) -> list:
+    with open(csv_file, "r", encoding="utf-8") as file:
+        header = file.readline().strip().split(",")
+
+    return header
