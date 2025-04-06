@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 from pathlib import Path
+from psycopg2 import sql
+
 
 dotenv_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path)
@@ -24,25 +26,25 @@ def get_etl_connection():
     return connection
 
 
-def execute_statement_without_result(sql: str) -> None:
-    conn = get_etl_connection()
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    print(f'number of rows affected: {cursor.rowcount}')
-    conn.commit()
-    cursor.close()
-    conn.close()
+def execute_statement_without_result(query: str, params=None) -> None:
+    with get_etl_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, params)
+            print(f'number of rows affected: {cursor.rowcount}')
+            conn.commit()
 
 
-def execute_statement_as_dataframe(sql) -> pd.DataFrame:
-    conn = get_etl_connection()
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    result: pd.DataFrame = cursor.fetch_dataframe()
-    cursor.close()
-    conn.close()
+def execute_statement_as_dataframe(query, params=None) -> pd.DataFrame:
+    with get_etl_connection() as conn:
+        with conn.cursor() as cursor:
+            if isinstance(query, sql.SQL):
+                query = query.as_string(conn)
+            cursor.execute(query, params)
+            print(query.as_string(conn))
+            columns = [i[0] for i in cursor.description]
+            result = cursor.fetchall()
 
-    return result
+            return pd.DataFrame(result, columns=columns)
 
 
 def copy_file_to_psql(schema_name: str, table_name: str, file_name: str) -> None:
@@ -52,13 +54,13 @@ def copy_file_to_psql(schema_name: str, table_name: str, file_name: str) -> None
     file_path = f'/data/{file_name}'
     print(file_path)
     # add check if schema or table or file exists
-    sql = f'''
+    query = f'''
         COPY {schema_name}.{table_name}
         FROM '{file_path}'
         WITH CSV HEADER;
     '''
-    print(sql)
-    execute_statement_without_result(sql)
+    print(query)
+    execute_statement_without_result(query)
 
 
 def find_project_root(starting_path=None):
@@ -73,27 +75,27 @@ def find_project_root(starting_path=None):
 
 
 def run_fill_stores_procedure():
-    sql = 'CALL etl.fill_stores();'
-    print(sql)
-    execute_statement_without_result(sql)
+    query = 'CALL etl.fill_stores();'
+    print(query)
+    execute_statement_without_result(query)
 
 
 def run_fill_sales_procedure():
-    sql = 'CALL etl.fill_sales();'
-    print(sql)
-    execute_statement_without_result(sql)
+    query = 'CALL etl.fill_sales();'
+    print(query)
+    execute_statement_without_result(query)
 
 
 def run_fill_orders_procedure():
-    sql = 'CALL etl.fill_orders();'
-    print(sql)
-    execute_statement_without_result(sql)
+    query = 'CALL etl.fill_orders();'
+    print(query)
+    execute_statement_without_result(query)
 
 
 def run_fill_products_procedure():
-    sql = 'CALL etl.fill_products();'
-    print(sql)
-    execute_statement_without_result(sql)
+    query = 'CALL etl.fill_products();'
+    print(query)
+    execute_statement_without_result(query)
 
 
 def get_last_row_dict(csv_file: str) -> dict:
@@ -114,3 +116,7 @@ def get_csv_headers(csv_file: str) -> list:
         header = file.readline().strip().split(",")
 
     return header
+
+
+def get_ids_from_table():
+    pass
