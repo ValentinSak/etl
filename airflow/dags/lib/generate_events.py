@@ -7,6 +7,7 @@ from service import execute_statement_as_dataframe
 from psycopg2 import sql
 
 
+
 def generate_random_string(length):
     return ''.join(random.choices(string.ascii_letters, k=length))
 
@@ -87,3 +88,6 @@ def generate_sales_events(quantity: int) -> list:
             sales_events.append(event)
             current_index += 1
     return sales_events
+
+def write_events_to_csv(path):
+    pass

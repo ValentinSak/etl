@@ -1,15 +1,16 @@
 import pandas as pd
-from service import (
-    run_fill_products_procedure,
-    run_fill_sales_procedure,
-    run_fill_orders_procedure,
-    run_fill_stores_procedure
-)
 from datetime import datetime, timedelta
 from airflow.operators.python import PythonOperator
 from airflow import DAG
 import os
 from airflow.utils.dates import days_ago
+import sys
+from ..lib.generate_events import (
+    generate_order_event,
+    generate_product_events,
+    generate_store_events,
+    generate_sales_events
+)
 
 dag_name = os.path.basename(__file__).replace('.py', '')
 default_args = {
@@ -23,7 +24,7 @@ with DAG(
         dag_name,
         default_args=default_args,
         description='fill tables with data from the .csv files in import_files directory',
-        schedule_interval=None,
+        schedule='',
         catchup=False,
         max_active_runs=1,
         tags=[
