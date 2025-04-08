@@ -50,7 +50,7 @@ def execute_statement_as_dataframe(query, params=None) -> pd.DataFrame:
 def copy_file_to_psql(schema_name: str, table_name: str, file_name: str) -> None:
     # root_path = find_project_root()
     # print(root_path)
-    # file_path = os.path.join(root_path, f'airflow/dags/data/{file_name}')
+    # file_path = os.path.join(root_path, f'airflow_src/dags/data/{file_name}')
     file_path = f'/data/{file_name}'
     print(file_path)
     # add check if schema or table or file exists

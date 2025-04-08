@@ -5,7 +5,7 @@ from airflow import DAG
 import os
 from airflow.utils.dates import days_ago
 import sys
-from ..lib.generate_events import (
+from airflow_src.dags.lib.generate_events import (
     generate_order_event,
     generate_product_events,
     generate_store_events,

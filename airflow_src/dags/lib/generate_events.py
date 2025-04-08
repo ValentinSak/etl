@@ -89,5 +89,8 @@ def generate_sales_events(quantity: int) -> list:
             current_index += 1
     return sales_events
 
-def write_events_to_csv(path):
-    pass
+def generate_events():
+    store_events = []
+    for i in range(5):
+        pass
+
