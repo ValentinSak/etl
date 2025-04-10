@@ -1,50 +1,12 @@
-from airflow.providers.postgres.hooks.postgres import PostgresHook
-from airflow.hooks.base import BaseHook
-from datetime import datetime, timedelta
 import json
-import random
-import psycopg2
 from dotenv import load_dotenv
 import os
-import pandas as pd
 from pathlib import Path
-from psycopg2 import sql
-
-
+from generate_events import generate_events
+import csv
+from repository import execute_statement_without_result, execute_batch_insert
 dotenv_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path)
-
-
-def get_etl_connection():
-    conn_string = f'dbname={os.getenv("ETL_DB_NAME")} ' \
-                  f'host={os.getenv("ETL_DB_HOST")} ' \
-                  f'port={os.getenv("ETL_DB_PORT")} ' \
-                  f'user={os.getenv("ETL_DB_USER")} ' \
-                  f'password={os.getenv("ETL_DB_PASSWORD")}'
-    connection = psycopg2.connect(conn_string)
-
-    return connection
-
-
-def execute_statement_without_result(query: str, params=None) -> None:
-    with get_etl_connection() as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(query, params)
-            print(f'number of rows affected: {cursor.rowcount}')
-            conn.commit()
-
-
-def execute_statement_as_dataframe(query, params=None) -> pd.DataFrame:
-    with get_etl_connection() as conn:
-        with conn.cursor() as cursor:
-            if isinstance(query, sql.SQL):
-                query = query.as_string(conn)
-            cursor.execute(query, params)
-            print(query.as_string(conn))
-            columns = [i[0] for i in cursor.description]
-            result = cursor.fetchall()
-
-            return pd.DataFrame(result, columns=columns)
 
 
 def copy_file_to_psql(schema_name: str, table_name: str, file_name: str) -> None:
@@ -120,3 +82,41 @@ def get_csv_headers(csv_file: str) -> list:
 
 def get_ids_from_table():
     pass
+
+
+def write_events_to_csv(events, file_path, batch_id):
+    headers = ['event_type', 'payload', 'batch_id']
+
+    with open(f'{file_path}/{batch_id}.csv', mode='a', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+
+        if file.tell() == 0:
+            writer.writerow(headers)
+
+        for row in events:
+            writer.writerow(row)
+
+    print(f"Written {len(events)} events to {batch_id}")
+
+
+def write_events_to_table(**context):
+    events = generate_events()
+    # batch_id = context['run_id']
+    batch_id = 'some_id'
+    # write_events_to_csv(events, '/shared', batch_id)
+    write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement', batch_id)
+
+    values = [(event_type, json.dumps(payload), batch_id) for event_type, payload in events]
+
+    insert_query = '''
+        INSERT INTO etl.raw_events (event_type, payload, batch_id)
+        VALUES %s
+    '''
+
+    execute_batch_insert(insert_query, values)
+
+# from dotenv import load_dotenv
+# import os
+#
+# load_dotenv()
+# write_events_to_table()
