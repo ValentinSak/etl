@@ -101,10 +101,8 @@ def write_events_to_csv(events, file_path, batch_id):
 
 def write_events_to_table(**context):
     events = generate_events()
-    # batch_id = context['run_id']
-    batch_id = 'some_id'
-    # write_events_to_csv(events, '/shared', batch_id)
-    write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement', batch_id)
+    batch_id = context['run_id']
+    write_events_to_csv(events, '/shared', batch_id)
 
     values = [(event_type, json.dumps(payload), batch_id) for event_type, payload in events]
 
