@@ -1,0 +1,53 @@
+# ---------------------------
+# Environment and IDE files
+# ---------------------------
+.env                    # Environment variables
+.vscode/                # VS Code settings
+.idea/                  # PyCharm settings
+venv/                   # Virtual environment (named venv)
+env/                    # Virtual environment (named env)
+
+# ---------------------------
+# Python cache and artifacts
+# ---------------------------
+__pycache__/            # Compiled bytecode
+*.py[cod]               # Compiled Python files (.pyc, .pyo, etc.)
+*$py.class              # Jython cache files
+
+# ---------------------------
+# Logs
+# ---------------------------
+logs/                   # Log folder
+*.log                   # Any .log file
+
+# ---------------------------
+# Docker-related
+# ---------------------------
+docker-compose_official.yaml
+
+# ---------------------------
+# Local scripts and temp files
+# ---------------------------
+test.py
+kagle.py
+
+# ---------------------------
+# Project-specific ETL and data generation
+# ---------------------------
+data_creation/create_orders.py
+data_creation/create_products.py
+data_creation/create_stores.py
+data_creation/generate_event.py
+data_creation/net.py
+
+# ---------------------------
+# Database volumes / mounted directories
+# ---------------------------
+etl_db/postgres_etl_data/
+.idea/.gitignore
+.env
+.idea/etl.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml
