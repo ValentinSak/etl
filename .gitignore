@@ -1,19 +1,19 @@
 # ---------------------------
 # Environment and IDE files
 # ---------------------------
-.env                    # Environment variables
-.vscode/                # VS Code settings
-.idea/                  # PyCharm settings
-venv/                   # Virtual environment (named venv)
-env/                    # Virtual environment (named env)
+.env  
+.vscode/
+.idea/
+venv/ 
+env/  
 .DS_Store
 
 # ---------------------------
 # Python cache and artifacts
 # ---------------------------
-__pycache__/            # Compiled bytecode
-*.py[cod]               # Compiled Python files (.pyc, .pyo, etc.)
-*$py.class              # Jython cache files
+__pycache__/           
+*.py[cod]              
+*$py.class             
 *.pyc
 
 # ---------------------------
@@ -48,7 +48,6 @@ data_creation/net.py
 # ---------------------------
 etl_db/postgres_etl_data/
 .idea/.gitignore
-.env
 .idea/etl.iml
 .idea/misc.xml
 .idea/modules.xml

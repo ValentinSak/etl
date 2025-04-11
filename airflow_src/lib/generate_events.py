@@ -106,3 +106,7 @@ def generate_events():
 
 print(generate_events())
 print()
+
+query = 'SELECT * FROM etl_db.etl.raw_events'
+df = execute_statement_as_dataframe(query)
+print(df)

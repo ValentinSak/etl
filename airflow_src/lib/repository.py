@@ -3,11 +3,11 @@ import os
 import pandas as pd
 from psycopg2 import sql
 from pathlib import Path
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from psycopg2.extras import execute_values
 
-dotenv_path = Path(__file__).parent / ".env"
-load_dotenv(dotenv_path)
+# dotenv_path = Path(__file__).parent / ".env"
+# load_dotenv(dotenv_path)
 
 
 def get_etl_connection():
