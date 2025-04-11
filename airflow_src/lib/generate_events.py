@@ -101,7 +101,8 @@ def generate_events():
 
 # from dotenv import load_dotenv
 # import os
-#
+
 # load_dotenv()
 
-# print(generate_events())
+print(generate_events())
+print()

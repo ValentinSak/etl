@@ -5,8 +5,10 @@ from psycopg2 import sql
 from pathlib import Path
 from dotenv import load_dotenv
 from psycopg2.extras import execute_values
+
 dotenv_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path)
+
 
 def get_etl_connection():
     conn_string = f'dbname={os.getenv("ETL_DB_NAME")} ' \
@@ -14,6 +16,7 @@ def get_etl_connection():
                   f'port={os.getenv("ETL_DB_PORT")} ' \
                   f'user={os.getenv("ETL_DB_USER")} ' \
                   f'password={os.getenv("ETL_DB_PASSWORD")}'
+    print(conn_string)
     connection = psycopg2.connect(conn_string)
 
     return connection
