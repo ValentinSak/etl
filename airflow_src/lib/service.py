@@ -1,10 +1,14 @@
 import json
 from dotenv import load_dotenv
 import os
+import sys
 from pathlib import Path
 from datetime import datetime
 import csv
 from repository import execute_statement_without_result, execute_batch_insert
+print(sys.path.append('/Users/valentinsak/PycharmProjects/etl/airflow_src'))
+from lib.generate_events import generate_events
+
 dotenv_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path)
 
@@ -85,7 +89,8 @@ def get_ids_from_table():
 
 
 def write_events_to_csv(events, file_path, **context):
-    batch_id = context['run_id']
+    # batch_id = context['run_id']
+    batch_id = 'some_id'
     headers = ['batch_id', 'event_type', 'payload', 'batch_created_at']
     batch_created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     events = events + []
@@ -97,7 +102,7 @@ def write_events_to_csv(events, file_path, **context):
             writer.writerow(headers)
 
         for row in events:
-            row_with_created_at = [batch_id] + row + [batch_created_at]
+            row_with_created_at = (batch_id, ) + row + (batch_created_at,)
             writer.writerow(row_with_created_at)
 
     print(f"Written {len(events)} events to {batch_id}")
@@ -114,9 +119,10 @@ def write_events_to_table(**context):
     execute_batch_insert(insert_query, values)
 
 
+if __name__ == '__main__':
+    from dotenv import load_dotenv
+    import os
 
-# from dotenv import load_dotenv
-# import os
-#
-# load_dotenv()
-# write_events_to_table()
+    load_dotenv()
+    events = generate_events()
+    write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement')

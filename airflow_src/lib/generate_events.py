@@ -104,9 +104,9 @@ def generate_events():
 
 # load_dotenv()
 
-print(generate_events())
-print()
+# print(generate_events())
+# print()
 
-query = 'SELECT * FROM etl_db.etl.raw_events'
-df = execute_statement_as_dataframe(query)
-print(df)
+# query = 'SELECT * FROM etl_db.etl.raw_events'
+# df = execute_statement_as_dataframe(query)
+# print(df)

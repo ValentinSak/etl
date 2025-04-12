@@ -31,8 +31,7 @@ services:
       - ./etl_db/procedures:/docker-entrypoint-initdb.d
       - ./etl_db/import_files:/data
       - ./etl_db/sql_scripts:/sql_scripts
-      - ./etl_db/run_on_start.sh:/run_on_start.sh
-      - ./shared_data_S3_replacement:/shared
+      - ./shared_data_S3_replacement:/shared:rw
 
   airflow:
     image: apache/airflow:2.7.3
