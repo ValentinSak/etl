@@ -2,7 +2,7 @@ import json
 from dotenv import load_dotenv
 import os
 from pathlib import Path
-from generate_events import generate_events
+from datetime import datetime
 import csv
 from repository import execute_statement_without_result, execute_batch_insert
 dotenv_path = Path(__file__).parent / ".env"
@@ -84,8 +84,11 @@ def get_ids_from_table():
     pass
 
 
-def write_events_to_csv(events, file_path, batch_id):
-    headers = ['event_type', 'payload', 'batch_id']
+def write_events_to_csv(events, file_path, **context):
+    batch_id = context['run_id']
+    headers = ['batch_id', 'event_type', 'payload', 'batch_created_at']
+    batch_created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    events = events + []
 
     with open(f'{file_path}/{batch_id}.csv', mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
@@ -94,16 +97,13 @@ def write_events_to_csv(events, file_path, batch_id):
             writer.writerow(headers)
 
         for row in events:
-            writer.writerow(row)
+            row_with_created_at = [batch_id] + row + [batch_created_at]
+            writer.writerow(row_with_created_at)
 
     print(f"Written {len(events)} events to {batch_id}")
 
 
 def write_events_to_table(**context):
-    events = generate_events()
-    batch_id = context['run_id']
-    write_events_to_csv(events, '/shared', batch_id)
-
     values = [(event_type, json.dumps(payload), batch_id) for event_type, payload in events]
 
     insert_query = '''
@@ -112,6 +112,8 @@ def write_events_to_table(**context):
     '''
 
     execute_batch_insert(insert_query, values)
+
+
 
 # from dotenv import load_dotenv
 # import os
