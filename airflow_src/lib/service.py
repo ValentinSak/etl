@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 import csv
-from repository import execute_statement_without_result, execute_batch_insert
+from repository import execute_statement_without_result, execute_batch_insert, execute_statement_as_dataframe
 print(sys.path.append('/Users/valentinsak/PycharmProjects/etl/airflow_src'))
 from lib.generate_events import generate_events
 
@@ -119,10 +119,25 @@ def write_events_to_table(**context):
     execute_batch_insert(insert_query, values)
 
 
+def get_all_processed_files() -> list[str]:
+    query = '''
+        SELECT
+            filename -- rename after
+        FROM utilities.processed_files
+    '''
+    print(query)
+    df = execute_statement_as_dataframe(query)
+    processed_files = df['filename'].tolist()
+
+    return processed_files
+
+
 if __name__ == '__main__':
     from dotenv import load_dotenv
     import os
 
     load_dotenv()
-    events = generate_events()
-    write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement')
+    # events = generate_events()
+    # write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement')
+    # process_files = get_all_processed_files()
+    # print(process_files)

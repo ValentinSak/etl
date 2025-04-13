@@ -44,7 +44,6 @@ def execute_statement_as_dataframe(query, params=None) -> pd.DataFrame:
             if isinstance(query, sql.SQL):
                 query = query.as_string(conn)
             cursor.execute(query, params)
-            print(query.as_string(conn))
             columns = [i[0] for i in cursor.description]
             result = cursor.fetchall()
 

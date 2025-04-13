@@ -1,6 +1,7 @@
 BEGIN;
 
 CREATE SCHEMA IF NOT EXISTS etl;
+CREATE SCHEMA IF NOT EXISTS utilities;
 
 DROP TABLE IF EXISTS etl.sales;
 DROP TABLE IF EXISTS etl.orders;
@@ -43,6 +44,12 @@ CREATE TABLE etl.raw_events (
     event_type TEXT,
     payload JSONB,
     created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE utilities.processed_files (
+    id SERIAL PRIMARY KEY,
+    file_name TEXT UNIQUE,
+    loaded_at TIMESTAMP DEFAULT now()
 );
 
 COMMIT;
