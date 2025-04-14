@@ -1,0 +1,65 @@
+batch_id,event_type,payload,batch_created_at
+some_id_1,store_event,"{'created_at': '2025-04-14 21:42:56', 'name': 'OnoqpSZBx', 'tax_id': 238028355681, 'status': 'active'}",2025-04-14 22:27:57
+some_id_1,store_event,"{'created_at': '2025-04-14 21:55:56', 'name': 'aZIFHFVIi', 'tax_id': 411223869215, 'status': 'active'}",2025-04-14 22:27:57
+some_id_1,product_event,"{'created_at': '2025-04-14 21:29:56', 'name': 'YLeXKYsfz', 'tax_id': 608841426130, 'status': 'active'}",2025-04-14 22:27:57
+some_id_1,product_event,"{'created_at': '2025-04-14 21:49:56', 'name': 'tlbmoEKD', 'tax_id': 960439427567, 'status': 'active'}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 22:07:56', 'user_id': 5657}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 21:57:56', 'user_id': 5481}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 21:58:56', 'user_id': 6914}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 21:46:56', 'user_id': 4284}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 21:38:56', 'user_id': 8848}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 21:57:56', 'user_id': 7714}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 22:20:56', 'user_id': 8134}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 21:33:56', 'user_id': 4594}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 22:24:56', 'user_id': 981}",2025-04-14 22:27:57
+some_id_1,order_event,"{'created_at': '2025-04-14 21:57:56', 'user_id': 3743}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:06:57', 'order_id': 10380, 'store_id': 3259, 'product_id': 386, 'quantity': 7}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:31:57', 'order_id': 10380, 'store_id': 9723, 'product_id': 63, 'quantity': 4}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:39:57', 'order_id': 4326, 'store_id': 13050, 'product_id': 757, 'quantity': 2}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:41:57', 'order_id': 4326, 'store_id': 11924, 'product_id': 236, 'quantity': 7}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:13:57', 'order_id': 12101, 'store_id': 3746, 'product_id': 566, 'quantity': 4}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:36:57', 'order_id': 12101, 'store_id': 13197, 'product_id': 873, 'quantity': 2}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:22:57', 'order_id': 4127, 'store_id': 10403, 'product_id': 110, 'quantity': 5}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:31:57', 'order_id': 4127, 'store_id': 1005, 'product_id': 100, 'quantity': 9}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:09:57', 'order_id': 3056, 'store_id': 413, 'product_id': 729, 'quantity': 5}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:51:57', 'order_id': 3056, 'store_id': 3168, 'product_id': 405, 'quantity': 5}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:28:57', 'order_id': 13280, 'store_id': 1350, 'product_id': 610, 'quantity': 1}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:32:57', 'order_id': 569, 'store_id': 13109, 'product_id': 263, 'quantity': 10}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:16:57', 'order_id': 14112, 'store_id': 6844, 'product_id': 235, 'quantity': 6}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:14:57', 'order_id': 3010, 'store_id': 7616, 'product_id': 917, 'quantity': 4}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:54:57', 'order_id': 6219, 'store_id': 11131, 'product_id': 925, 'quantity': 8}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:21:57', 'order_id': 6219, 'store_id': 13495, 'product_id': 233, 'quantity': 1}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:07:57', 'order_id': 6219, 'store_id': 1596, 'product_id': 155, 'quantity': 4}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:28:57', 'order_id': 1634, 'store_id': 2675, 'product_id': 678, 'quantity': 9}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:33:57', 'order_id': 1634, 'store_id': 10969, 'product_id': 499, 'quantity': 10}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:54:57', 'order_id': 10804, 'store_id': 4149, 'product_id': 528, 'quantity': 5}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:36:57', 'order_id': 9542, 'store_id': 12864, 'product_id': 679, 'quantity': 7}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:59:57', 'order_id': 9542, 'store_id': 8117, 'product_id': 690, 'quantity': 3}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:58:57', 'order_id': 9542, 'store_id': 7911, 'product_id': 508, 'quantity': 1}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:01:57', 'order_id': 8943, 'store_id': 2009, 'product_id': 538, 'quantity': 8}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:44:57', 'order_id': 8943, 'store_id': 10690, 'product_id': 386, 'quantity': 6}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:34:57', 'order_id': 1333, 'store_id': 12609, 'product_id': 504, 'quantity': 9}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:30:57', 'order_id': 4659, 'store_id': 4358, 'product_id': 135, 'quantity': 1}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:52:57', 'order_id': 4659, 'store_id': 1923, 'product_id': 615, 'quantity': 9}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:52:57', 'order_id': 7663, 'store_id': 5700, 'product_id': 333, 'quantity': 3}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:41:57', 'order_id': 7663, 'store_id': 8373, 'product_id': 149, 'quantity': 2}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:14:57', 'order_id': 7663, 'store_id': 8949, 'product_id': 449, 'quantity': 4}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:40:57', 'order_id': 2878, 'store_id': 6061, 'product_id': 129, 'quantity': 5}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:43:57', 'order_id': 2878, 'store_id': 8030, 'product_id': 531, 'quantity': 5}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:40:57', 'order_id': 3917, 'store_id': 12409, 'product_id': 288, 'quantity': 8}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:18:57', 'order_id': 3917, 'store_id': 6201, 'product_id': 223, 'quantity': 1}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:31:57', 'order_id': 3628, 'store_id': 11953, 'product_id': 157, 'quantity': 7}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:01:57', 'order_id': 3628, 'store_id': 6384, 'product_id': 223, 'quantity': 5}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:39:57', 'order_id': 13318, 'store_id': 2679, 'product_id': 429, 'quantity': 8}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:22:57', 'order_id': 13318, 'store_id': 2378, 'product_id': 415, 'quantity': 10}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:35:57', 'order_id': 1012, 'store_id': 10005, 'product_id': 552, 'quantity': 8}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:39:57', 'order_id': 1012, 'store_id': 9113, 'product_id': 34, 'quantity': 3}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:58:57', 'order_id': 371, 'store_id': 6390, 'product_id': 489, 'quantity': 10}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:58:57', 'order_id': 8132, 'store_id': 12319, 'product_id': 88, 'quantity': 5}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:46:57', 'order_id': 8132, 'store_id': 8378, 'product_id': 810, 'quantity': 7}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:37:57', 'order_id': 7698, 'store_id': 1590, 'product_id': 355, 'quantity': 9}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:08:57', 'order_id': 7698, 'store_id': 3992, 'product_id': 113, 'quantity': 2}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:38:57', 'order_id': 4488, 'store_id': 8780, 'product_id': 595, 'quantity': 6}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 21:35:57', 'order_id': 4488, 'store_id': 8196, 'product_id': 14, 'quantity': 8}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:21:57', 'order_id': 2339, 'store_id': 12226, 'product_id': 53, 'quantity': 10}",2025-04-14 22:27:57
+some_id_1,sales_event,"{'sale_date': '2025-04-14 22:14:57', 'order_id': 1767, 'store_id': 9901, 'product_id': 888, 'quantity': 10}",2025-04-14 22:27:57

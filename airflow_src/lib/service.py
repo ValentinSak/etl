@@ -90,7 +90,7 @@ def get_ids_from_table():
 
 def write_events_to_csv(events, file_path, **context):
     # batch_id = context['run_id']
-    batch_id = 'some_id'
+    batch_id = 'some_id_1'
     headers = ['batch_id', 'event_type', 'payload', 'batch_created_at']
     batch_created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     events = events + []
@@ -141,3 +141,8 @@ if __name__ == '__main__':
     # write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement')
     # process_files = get_all_processed_files()
     # print(process_files)
+    
+    query = '''
+        CALL load_csv_file(%s, %s);
+    '''
+    execute_statement_without_result(query, ('/shared/some_id_1.csv', 'some_id_1.csv'))

@@ -43,7 +43,7 @@ CREATE TABLE etl.raw_events (
     batch_id TEXT,
     event_type TEXT,
     payload JSONB,
-    created_at TIMESTAMP DEFAULT now()
+    batch_created_at TIMESTAMP
 );
 
 CREATE TABLE utilities.processed_files (
