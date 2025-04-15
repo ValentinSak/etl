@@ -5,6 +5,7 @@ import string
 import numpy as np
 from repository import execute_statement_as_dataframe
 from psycopg2 import sql
+import json
 
 
 def generate_random_string(length):
@@ -38,26 +39,32 @@ def get_values_from_column(schema_name: str, table_name: str, column_name: str):
 
 
 def generate_order_event():
-    return {
+    event_data = {
         'created_at': (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
         'user_id': random.randint(1, 10001)
     }
 
+    return json.dumps(event_data)
+
 
 def generate_product_event():
-    return {
+    event_data = {
         'created_at': (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
         'name': generate_random_string(random.randint(5, 10))
     }
 
+    return json.dumps(event_data)
+
 
 def generate_store_event():
-    return {
+    event_data = {
         'created_at': (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
         'name': generate_random_string(random.randint(5, 10)),
         'tax_id': random.randint(10 ** 11, 10 ** 12),
         'status': 'active'
     }
+
+    return json.dumps(event_data)
 
 
 def generate_sales_events(quantity: int) -> list:
@@ -84,7 +91,7 @@ def generate_sales_events(quantity: int) -> list:
                 "product_id": product_ids[current_index],
                 "quantity": int(quantities[current_index])
             }
-            sales_events.append(('sales_event', event))
+            sales_events.append(('sales_event', json.sumps(event)))
             current_index += 1
     return sales_events
 
