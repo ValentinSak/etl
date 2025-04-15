@@ -12,7 +12,7 @@ BEGIN
     END IF;
 
     EXECUTE format(
-        'COPY etl.raw_events(batch_id, event_type, payload, batch_created_at)
+        'COPY etl.raw_events(batch_id, event_type, payload, batch_created_at) DELIMITER ',' NULL '' 
          FROM %L
          WITH (FORMAT csv, HEADER true)',
         file_path

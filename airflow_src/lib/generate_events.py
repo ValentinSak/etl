@@ -40,8 +40,8 @@ def get_values_from_column(schema_name: str, table_name: str, column_name: str):
 
 def generate_order_event():
     event_data = {
-        'created_at': (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
-        'user_id': random.randint(1, 10001)
+        "created_at": (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
+        "user_id": random.randint(1, 10001)
     }
 
     return json.dumps(event_data)
@@ -49,8 +49,8 @@ def generate_order_event():
 
 def generate_product_event():
     event_data = {
-        'created_at': (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
-        'name': generate_random_string(random.randint(5, 10))
+        "created_at": (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
+        "name": generate_random_string(random.randint(5, 10))
     }
 
     return json.dumps(event_data)
@@ -58,10 +58,10 @@ def generate_product_event():
 
 def generate_store_event():
     event_data = {
-        'created_at': (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
-        'name': generate_random_string(random.randint(5, 10)),
-        'tax_id': random.randint(10 ** 11, 10 ** 12),
-        'status': 'active'
+        "created_at": (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
+        "name": generate_random_string(random.randint(5, 10)),
+        "tax_id": random.randint(10 ** 11, 10 ** 12),
+        "status": 'active'
     }
 
     return json.dumps(event_data)
@@ -91,15 +91,15 @@ def generate_sales_events(quantity: int) -> list:
                 "product_id": product_ids[current_index],
                 "quantity": int(quantities[current_index])
             }
-            sales_events.append(('sales_event', json.sumps(event)))
+            sales_events.append(("sales_event", json.dumps(event)))
             current_index += 1
     return sales_events
 
 
 def generate_events():
-    store_events = [('store_event', generate_store_event()) for i in range(2)]
-    product_events = [('product_event', generate_store_event()) for i in range(2)]
-    order_events = [('order_event', generate_order_event()) for i in range(10)]
+    store_events = [("store_event", generate_store_event()) for i in range(2)]
+    product_events = [("product_event", generate_store_event()) for i in range(2)]
+    order_events = [("order_event", generate_order_event()) for i in range(10)]
     sales_events = generate_sales_events(50)
 
     events = store_events + product_events + order_events + sales_events

@@ -138,6 +138,7 @@ if __name__ == '__main__':
 
     load_dotenv()
     # events = generate_events()
+    # print(events)
     # write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement')
     # process_files = get_all_processed_files()
     # print(process_files)
@@ -146,3 +147,7 @@ if __name__ == '__main__':
         CALL load_csv_file(%s, %s);
     '''
     execute_statement_without_result(query, ('/shared/some_id_1.csv', 'some_id_1.csv'))
+
+    # with open("/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement/some_id_1.csv", "r", encoding="utf-8") as f:
+    #     for i, line in enumerate(f, 1):
+    #         print(f"{i}: {repr(line)}")
