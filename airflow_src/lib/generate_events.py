@@ -98,7 +98,7 @@ def generate_sales_events(quantity: int) -> list:
 
 def generate_events():
     store_events = [("store_event", generate_store_event()) for i in range(2)]
-    product_events = [("product_event", generate_store_event()) for i in range(2)]
+    product_events = [("product_event", generate_product_event()) for i in range(2)]
     order_events = [("order_event", generate_order_event()) for i in range(10)]
     sales_events = generate_sales_events(50)
 

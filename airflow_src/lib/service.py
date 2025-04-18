@@ -7,7 +7,7 @@ from datetime import datetime
 import csv
 from repository import execute_statement_without_result, execute_batch_insert, execute_statement_as_dataframe
 print(sys.path.append('/Users/valentinsak/PycharmProjects/etl/airflow_src'))
-from lib.generate_events import generate_events
+
 
 dotenv_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path)
@@ -64,6 +64,14 @@ def run_fill_products_procedure():
     execute_statement_without_result(query)
 
 
+def run_fill_events_from_files_procedure(file_path: str, file_name: str):    
+    query = '''
+        CALL etl.load_csv_file(%s, %s);
+    '''
+    print(query)
+    execute_statement_without_result(query, (file_path, file_name))
+
+
 def get_last_row_dict(csv_file: str) -> dict:
     headers = get_csv_headers(csv_file)
     with open(csv_file, "rb") as file:
@@ -89,21 +97,27 @@ def get_ids_from_table():
 
 
 def write_events_to_csv(events, file_path, **context):
-    # batch_id = context['run_id']
-    batch_id = 'some_id_1'
+    batch_id = context['run_id']
     headers = ['batch_id', 'event_type', 'payload', 'batch_created_at']
     batch_created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    events = events + []
 
-    with open(f'{file_path}/{batch_id}.csv', mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
+    with open(f'{file_path}/{batch_id}.csv', mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL, escapechar='\\')
+        writer.writerow(headers)
 
-        if file.tell() == 0:
-            writer.writerow(headers)
-
-        for row in events:
-            row_with_created_at = (batch_id, ) + row + (batch_created_at,)
-            writer.writerow(row_with_created_at)
+        for event_type, payload in events:
+            if isinstance(payload, str):
+                try:
+                    payload = json.dumps(json.loads(payload))
+                except json.JSONDecodeError:
+                    pass
+            else:
+                payload = json.dumps(payload)
+            
+            payload = payload.replace('\n', ' ')
+            
+            row = [batch_id, event_type, payload, batch_created_at]
+            writer.writerow(row)
 
     print(f"Written {len(events)} events to {batch_id}")
 
@@ -131,22 +145,38 @@ def get_all_processed_files() -> list[str]:
 
     return processed_files
 
+def upload_events(data_dir: str, processed_files: list[str]):
+    for file in os.listdir(data_dir):
+        if file.endswith('csv') and file not in processed_files:
+            full_path = os.path.join(data_dir, file)
+            try:
+                run_fill_events_from_files_procedure(full_path, file)
+                print(f'uploaded file {file}')
+            except Exception as err:
+                print(f"Error processing {file}: {err}")
+
 
 if __name__ == '__main__':
     from dotenv import load_dotenv
     import os
 
-    load_dotenv()
+    # load_dotenv()
     # events = generate_events()
     # print(events)
     # write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement')
     # process_files = get_all_processed_files()
     # print(process_files)
     
-    query = '''
-        CALL load_csv_file(%s, %s);
-    '''
-    execute_statement_without_result(query, ('/shared/some_id_1.csv', 'some_id_1.csv'))
+    # query = '''
+    #     CALL etl.load_csv_file(%s, %s);
+    # '''
+    # execute_statement_without_result(query, ('/shared/some_id_1.csv', 'some_id_1.csv'))
+
+    # with open('/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement/some_id_1.csv', 'r') as file:
+    #     reader = csv.reader(file)
+    #     headers = next(reader)  # Skip header
+    #     for row in reader:
+    #         print(row)
 
     # with open("/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement/some_id_1.csv", "r", encoding="utf-8") as f:
     #     for i, line in enumerate(f, 1):

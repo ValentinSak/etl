@@ -1,5 +1,5 @@
-CREATE OR REPLACE PROCEDURE load_csv_file(file_path TEXT, file_name TEXT)
-LANGUAGE plpgsql
+CREATE OR REPLACE PROCEDURE etl.load_csv_file(IN file_path text, IN file_name text)
+ LANGUAGE plpgsql
 AS $$
 BEGIN
     INSERT INTO utilities.processed_files(filename)
@@ -12,12 +12,13 @@ BEGIN
     END IF;
 
     EXECUTE format(
-        'COPY etl.raw_events(batch_id, event_type, payload, batch_created_at) DELIMITER ',' NULL '' 
-         FROM %L
-         WITH (FORMAT csv, HEADER true)',
+        'COPY etl.raw_events(batch_id, event_type, payload, batch_created_at) 
+	     FROM ''%s''
+	     WITH (FORMAT csv, HEADER true, DELIMITER '','', QUOTE ''"'')',
         file_path
     );
 
     RAISE NOTICE 'File % loaded and logged.', file_name;
 END;
-$$;
+$$
+;
