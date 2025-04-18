@@ -45,5 +45,6 @@ with DAG(
     PythonOperator(
         task_id=upload_events.__name__,
         python_callable=upload_events_wrapper,
-        op_args=[shared_dir_path]
+        op_args=[shared_dir_path],
+        dag=dag
     )

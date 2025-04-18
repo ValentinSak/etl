@@ -48,7 +48,7 @@ CREATE TABLE etl.raw_events (
 
 CREATE TABLE utilities.processed_files (
     id SERIAL PRIMARY KEY,
-    file_name TEXT UNIQUE,
+    filename TEXT UNIQUE,
     loaded_at TIMESTAMP DEFAULT now()
 );
 
@@ -61,7 +61,7 @@ CREATE INDEX idx_sales_store_number ON etl.sales(store_id);
 CREATE INDEX idx_sales_product_id ON etl.sales(product_id);
 CREATE INDEX idx_sales_sale_date ON etl.sales(sale_date);   
 CREATE INDEX idx_raw_events_event_type ON etl.raw_events(event_type);
-CREATE INDEX idx_raw_events_created_at ON etl.raw_events(created_at);
+CREATE INDEX idx_raw_events_created_at ON etl.raw_events(batch_created_at);
 
 
 COMMIT;

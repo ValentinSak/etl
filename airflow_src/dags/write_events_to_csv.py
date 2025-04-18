@@ -41,5 +41,6 @@ with DAG(
         task_id=write_events_to_csv.__name__,
         python_callable=write_events_to_csv,
         op_args=[events, shared_dir_path],
-        provide_context=True
+        provide_context=True,
+        dag=dag
     )

@@ -32,6 +32,7 @@ services:
       - ./etl_db/import_files:/data
       - ./etl_db/sql_scripts:/sql_scripts
       - ./shared_data_S3_replacement:/shared:rw
+      - ./etl_db/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
 
   airflow:
     image: apache/airflow:2.7.3-python3.11

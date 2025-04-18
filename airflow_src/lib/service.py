@@ -136,7 +136,7 @@ def write_events_to_table(**context):
 def get_all_processed_files() -> list[str]:
     query = '''
         SELECT
-            filename -- rename after
+            filename
         FROM utilities.processed_files
     '''
     print(query)
