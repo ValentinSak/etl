@@ -3,7 +3,7 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     BEGIN
-        COPY etl.orders
+        COPY etl.orders (id, created_at, user_id)
         FROM '/data/orders.csv'
         WITH CSV HEADER;
     EXCEPTION
