@@ -53,3 +53,5 @@ etl_db/postgres_etl_data/
 .idea/modules.xml
 .idea/vcs.xml
 .idea/inspectionProfiles/profiles_settings.xml
+/shared_data_S3_replacement/*
+!/shared_data_S3_replacement/.gitkeep
