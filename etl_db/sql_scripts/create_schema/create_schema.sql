@@ -34,7 +34,8 @@ CREATE TABLE etl.products (
     batch_created_at TIMESTAMP,
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMP,
-    name TEXT
+    name TEXT,
+    price DECIMAL(10, 2)  
 );
 
 CREATE TABLE etl.orders (

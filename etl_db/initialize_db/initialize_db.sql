@@ -9,7 +9,7 @@
 \i /sql_scripts/fill_tables_from_files/fill_tables.sql;
 
 -- fill tables from events
-\i /sql_scripts/fill_tables_from_events/fill_orders_from_events.sql;
-\i /sql_scripts/fill_tables_from_events/fill_stores_from_events.sql;
-\i /sql_scripts/fill_tables_from_events/fill_products_from_events.sql;
-\i /sql_scripts/fill_tables_from_events/fill_sales_from_events.sql;
+\i /sql_scripts/etl_fill_tables_from_events/fill_orders_from_events.sql;
+\i /sql_scripts/etl_fill_tables_from_events/fill_stores_from_events.sql;
+\i /sql_scripts/etl_fill_tables_from_events/fill_products_from_events.sql;
+\i /sql_scripts/etl_fill_tables_from_events/fill_sales_from_events.sql;

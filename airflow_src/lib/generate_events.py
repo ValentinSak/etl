@@ -45,7 +45,8 @@ def generate_order_event():
 def generate_product_event():
     event_data = {
         "created_at": (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
-        "name": generate_random_string(random.randint(5, 10))
+        "name": generate_random_string(random.randint(5, 10)),
+        "price": round(random.uniform(1, 500), 2)
     }
 
     return json.dumps(event_data)
