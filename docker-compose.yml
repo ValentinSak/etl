@@ -28,7 +28,7 @@ services:
       - "5433:5432"
     volumes:
       - ./etl_db/postgres_etl_data:/var/lib/postgresql/data
-      - ./etl_db/procedures:/docker-entrypoint-initdb.d
+      - ./etl_db/initialize_db:/docker-entrypoint-initdb.d
       - ./etl_db/import_files:/data
       - ./etl_db/sql_scripts:/sql_scripts
       - ./shared_data_S3_replacement:/shared:rw

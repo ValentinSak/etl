@@ -1,11 +1,4 @@
-from pathlib import Path
-import sys
 import os
-
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-print(os.path.dirname(os.path.abspath(__file__)))
-root = str(Path(__file__).resolve().parent.parent)
-print(root)
 import pandas as pd
 from datetime import datetime
 from airflow.operators.python import PythonOperator

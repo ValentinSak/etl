@@ -12,11 +12,6 @@ def generate_random_string(length):
     return ''.join(random.choices(string.ascii_letters, k=length))
 
 
-def get_random_ids_from_csv(csv_file: str, column_name: str, n: int) -> list:
-    df = pd.read_csv(csv_file, usecols=[column_name])
-    return df[column_name].sample(n=n, replace=True).tolist()
-
-
 def get_random_ids_from_df(df: pd.DataFrame, column_name: str, n: int) -> list:
     return df[column_name].sample(n=n, replace=True).tolist()
 
@@ -104,16 +99,3 @@ def generate_events():
     events = store_events + product_events + order_events + sales_events
 
     return events
-
-# from dotenv import load_dotenv
-# import os
-
-# load_dotenv()
-# events = generate_events()
-# print(events)
-# print(generate_events())
-# print()
-
-# query = 'SELECT * FROM etl_db.etl.raw_events'
-# df = execute_statement_as_dataframe(query)
-# print(df)

@@ -6,62 +6,10 @@ from pathlib import Path
 from datetime import datetime
 import csv
 from repository import execute_statement_without_result, execute_batch_insert, execute_statement_as_dataframe
-print(sys.path.append('/Users/valentinsak/PycharmProjects/etl/airflow_src'))
 
 
 dotenv_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path)
-
-
-def copy_file_to_psql(schema_name: str, table_name: str, file_name: str) -> None:
-    # root_path = find_project_root()
-    # print(root_path)
-    # file_path = os.path.join(root_path, f'airflow_src/dags/data/{file_name}')
-    file_path = f'/data/{file_name}'
-    print(file_path)
-    # add check if schema or table or file exists
-    query = f'''
-        COPY {schema_name}.{table_name}
-        FROM '{file_path}'
-        WITH CSV HEADER;
-    '''
-    print(query)
-    execute_statement_without_result(query)
-
-
-def find_project_root(starting_path=None):
-    current_path = Path(starting_path or Path(__file__).resolve())
-
-    while current_path.parent != current_path:
-        if (current_path / 'README.md').exists():
-            return current_path
-        current_path = current_path.parent
-
-    raise FileNotFoundError("Could not find the project root.")
-
-
-def run_fill_stores_procedure():
-    query = 'CALL etl.fill_stores();'
-    print(query)
-    execute_statement_without_result(query)
-
-
-def run_fill_sales_procedure():
-    query = 'CALL etl.fill_sales();'
-    print(query)
-    execute_statement_without_result(query)
-
-
-def run_fill_orders_procedure():
-    query = 'CALL etl.fill_orders();'
-    print(query)
-    execute_statement_without_result(query)
-
-
-def run_fill_products_procedure():
-    query = 'CALL etl.fill_products();'
-    print(query)
-    execute_statement_without_result(query)
 
 
 def run_fill_events_from_files_procedure(file_path: str, file_name: str):    
@@ -92,10 +40,6 @@ def get_csv_headers(csv_file: str) -> list:
     return header
 
 
-def get_ids_from_table():
-    pass
-
-
 def write_events_to_csv(events, file_path, **context):
     batch_id = context['run_id']
     headers = ['batch_id', 'event_type', 'payload', 'batch_created_at']
@@ -122,17 +66,6 @@ def write_events_to_csv(events, file_path, **context):
     print(f"Written {len(events)} events to {batch_id}")
 
 
-def write_events_to_table(**context):
-    values = [(event_type, json.dumps(payload), batch_id) for event_type, payload in events]
-
-    insert_query = '''
-        INSERT INTO etl.raw_events (event_type, payload, batch_id)
-        VALUES %s
-    '''
-
-    execute_batch_insert(insert_query, values)
-
-
 def get_all_processed_files() -> list[str]:
     query = '''
         SELECT
@@ -154,30 +87,3 @@ def upload_events(data_dir: str, processed_files: list[str]):
                 print(f'uploaded file {file}')
             except Exception as err:
                 print(f"Error processing {file}: {err}")
-
-
-if __name__ == '__main__':
-    from dotenv import load_dotenv
-    import os
-
-    # load_dotenv()
-    # events = generate_events()
-    # print(events)
-    # write_events_to_csv(events, '/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement')
-    # process_files = get_all_processed_files()
-    # print(process_files)
-    
-    # query = '''
-    #     CALL etl.load_csv_file(%s, %s);
-    # '''
-    # execute_statement_without_result(query, ('/shared/some_id_1.csv', 'some_id_1.csv'))
-
-    # with open('/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement/some_id_1.csv', 'r') as file:
-    #     reader = csv.reader(file)
-    #     headers = next(reader)  # Skip header
-    #     for row in reader:
-    #         print(row)
-
-    # with open("/Users/valentinsak/PycharmProjects/etl/shared_data_S3_replacement/some_id_1.csv", "r", encoding="utf-8") as f:
-    #     for i, line in enumerate(f, 1):
-    #         print(f"{i}: {repr(line)}")
