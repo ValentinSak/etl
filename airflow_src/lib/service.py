@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 import csv
+from configs import configs
 from repository import execute_statement_without_result, execute_batch_insert, execute_statement_as_dataframe
 
 
@@ -87,3 +88,23 @@ def upload_events(data_dir: str, processed_files: list[str]):
                 print(f'uploaded file {file}')
             except Exception as err:
                 print(f"Error processing {file}: {err}")
+
+def get_recipient(id: int) -> dict:
+    try:
+        recipient_config = [recipient for recipient in configs['recipients'] if recipient['id'] == id]
+        if len(recipient_config) > 1:
+            raise ValueError(f'there is more then one recipient with such id {id}')
+        
+        return recipient_config[0]
+    
+    except Exception as err:
+        print(err)
+
+def get_recipients(ids: list[int]) -> dict:
+    try:
+        recipient_configs = [recipient for recipient in configs['recipients'] if recipient['id'] in ids]
+        
+        return recipient_configs
+    
+    except Exception as err:
+        print(err)
