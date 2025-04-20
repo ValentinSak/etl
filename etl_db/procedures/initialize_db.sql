@@ -5,3 +5,7 @@
 \i /sql_scripts/fill_sales_from_file.sql;
 \i /sql_scripts/fill_events_from_files.sql;
 \i /sql_scripts/fill_tables.sql;
+\i /sql_scripts/fill_orders_from_events.sql;
+\i /sql_scripts/fill_stores_from_events.sql;
+\i /sql_scripts/fill_products_from_events.sql;
+\i /sql_scripts/fill_sales_from_events.sql;

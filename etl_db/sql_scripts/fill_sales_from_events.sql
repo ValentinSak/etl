@@ -25,8 +25,16 @@ BEGIN
           AND (events.payload->>'quantity') IS NOT NULL
           AND (events.payload->>'sale_date') IS NOT NULL
           AND (events.payload->>'quantity')::INT > 0 
-    ),
-    rejected_sales_events_cte (
+    )
+
+    INSERT INTO etl.sales 
+        (raw_id, batch_id, batch_created_at, order_id, store_id, product_id, quantity, sale_date)
+    SELECT 
+        raw_id, batch_id, batch_created_at, order_id, store_id, product_id, quantity, sale_date
+    FROM sales_events_cte;
+
+    WITH 
+    rejected_sales_events_cte AS (
         SELECT 
             events.raw_id,
             events.batch_id,
@@ -58,17 +66,10 @@ BEGIN
           )
     )
 
-
-    INSERT INTO etl.sales 
-        (raw_id, batch_id, batch_created_at, order_id, store_id, product_id, quantity, sale_date)
-    SELECT 
-        (raw_id, batch_id, batch_created_at, order_id, store_id, product_id, quantity, sale_date) 
-    FROM sales_events_cte;
-
-    INSERT INTO etl.rejected_sales_events
+    INSERT INTO etl.rejected_events
         (raw_id, batch_id, batch_created_at, payload, rejection_reason)
     SELECT 
         raw_id, batch_id, batch_created_at, payload, rejection_reason
-    FROM rejected_events_cte;
+    FROM rejected_sales_events_cte;
 END;
 $$;

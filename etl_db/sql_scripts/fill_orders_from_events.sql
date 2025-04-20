@@ -17,6 +17,6 @@ BEGIN
           )
     )
     INSERT INTO etl.orders (raw_id, batch_id, batch_created_at, created_at, user_id)
-    SELECT (raw_id, batch_id, batch_created_at, created_at, user_id) FROM order_events_cte;
+    SELECT raw_id, batch_id, batch_created_at, created_at, user_id FROM order_events_cte;
 END;
 $$;

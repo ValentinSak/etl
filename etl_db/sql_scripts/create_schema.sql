@@ -21,7 +21,7 @@ CREATE TABLE etl.stores (
     raw_id INT REFERENCES etl.raw_events(raw_id),
     batch_id TEXT,
     batch_created_at TIMESTAMP,
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     created_at TIMESTAMP,
     name TEXT,
     tax_id BIGINT,
@@ -64,7 +64,7 @@ CREATE TABLE utilities.processed_files (
     loaded_at TIMESTAMP DEFAULT now()
 );
 
-CREATE TABLE etl.rejected_sales_events (
+CREATE TABLE etl.rejected_events (
     raw_id INT PRIMARY KEY,
     batch_id TEXT,
     batch_created_at TIMESTAMP,

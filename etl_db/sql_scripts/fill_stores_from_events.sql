@@ -2,7 +2,7 @@ CREATE OR REPLACE PROCEDURE etl.fill_stores_from_events()
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    WITH 
+WITH 
     store_events_cte AS (
         SELECT 
             events.raw_id,
@@ -11,7 +11,7 @@ BEGIN
             (events.payload->>'created_at')::timestamp AS created_at,
             (events.payload->>'name'):: TEXT AS name,
             (events.payload->>'tax_id'):: BIGINT AS tax_id,
-            (events.payload->>'status'):: TEXT
+            (events.payload->>'status'):: TEXT AS status
         FROM etl.raw_events events
         WHERE events.event_type = 'store_event'
           AND events.batch_created_at > COALESCE((SELECT MAX(stores.batch_created_at) FROM etl.stores AS stores), '1900-01-01')
@@ -22,8 +22,16 @@ BEGIN
           AND (events.payload->>'name') IS NOT NULL
           AND (events.payload->>'tax_id') IS NOT NULL
           AND (events.payload->>'status') IS NOT NULL
-    ),
-    rejected_store_events_cte AS (
+    )
+
+    INSERT INTO etl.stores 
+        (raw_id, batch_id, batch_created_at, created_at, name, tax_id, status)
+    SELECT 
+        raw_id, batch_id, batch_created_at, created_at, name, tax_id, status
+    FROM store_events_cte;
+
+WITH 
+rejected_store_events_cte AS (
         SELECT
             events.raw_id,
             events.batch_id,
@@ -51,17 +59,13 @@ BEGIN
           )
     )
 
-    INSERT INTO etl.stores 
-        (raw_id, batch_id, batch_created_at, created_at, name, tax_id, status)
-    SELECT 
-        (raw_id, batch_id, batch_created_at, created_at, name, tax_id, status) 
-    FROM store_events_cte;
 
-    INSERT INTO etl.rejected_sales_events
+
+    INSERT INTO etl.rejected_events
         (raw_id, batch_id, batch_created_at, payload, rejection_reason)
     SELECT 
         raw_id, batch_id, batch_created_at, payload, rejection_reason
-    FROM rejected_events_cte;
+    FROM rejected_store_events_cte;
 
 
 END;

@@ -17,6 +17,6 @@ BEGIN
           )
     )
     INSERT INTO etl.products (raw_id, batch_id, batch_created_at, created_at, name)
-    SELECT * FROM product_events_cte;
+    SELECT raw_id, batch_id, batch_created_at, created_at, name FROM product_events_cte;
 END;
 $$;

@@ -70,12 +70,11 @@ def generate_store_event():
 def generate_sales_events(quantity: int) -> list:
     order_ids_df = get_values_from_column('etl', 'orders', 'id')
     product_ids_df = get_values_from_column('etl', 'products', 'id')
-    store_ids_df = get_values_from_column('etl', 'orders', 'id')
+    store_ids_df = get_values_from_column('etl', 'stores', 'id')
     unique_order_ids = get_random_ids_from_df(order_ids_df, "id", int(quantity * 0.6))
     product_ids = get_random_ids_from_df(product_ids_df, "id", quantity)
     store_ids = get_random_ids_from_df(store_ids_df, "id", quantity)
     quantities = np.random.randint(1, 11, size=quantity)
-
     sales_events = []
     current_index = 0
 
@@ -110,7 +109,8 @@ def generate_events():
 # import os
 
 # load_dotenv()
-
+# events = generate_events()
+# print(events)
 # print(generate_events())
 # print()
 
