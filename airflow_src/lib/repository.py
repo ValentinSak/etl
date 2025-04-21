@@ -8,6 +8,7 @@ from typing import Any
 
 
 def get_etl_connection() -> connection:
+    """Creates and returns a connection to the ETL database"""
     conn_string = f'dbname={os.getenv("ETL_DB_NAME")} ' \
                   f'host={os.getenv("ETL_DB_HOST")} ' \
                   f'port={os.getenv("ETL_DB_PORT")} ' \
@@ -20,6 +21,14 @@ def get_etl_connection() -> connection:
 
 
 def execute_statement_without_result(query: str, params: Any | None = None) -> None:
+    """Executes a SQL statement that doesn't return results
+    
+    params:
+    query - SQL query to execute
+    params - optional parameters for the query
+    
+    Commits the transaction after execution
+    """
     with get_etl_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, params)
@@ -28,6 +37,14 @@ def execute_statement_without_result(query: str, params: Any | None = None) -> N
 
 
 def execute_batch_insert(query: str, values: list) -> None:
+    """Executes a batch insert operation using execute_values
+    
+    params:
+    query - SQL INSERT statement
+    values - list of tuples containing values to insert
+    
+    Commits the transaction after execution
+    """
     with get_etl_connection() as conn:
         with conn.cursor() as cur:
             execute_values(cur, query, values)
@@ -36,6 +53,14 @@ def execute_batch_insert(query: str, values: list) -> None:
 
 
 def execute_statement_as_dataframe(query: str | sql.SQL, params: Any | None = None) -> pd.DataFrame:
+    """Executes a SQL query and returns results as a pandas DataFrame
+    
+    params:
+    query - SQL query to execute (can be string or SQL object)
+    params - optional parameters for the query
+    
+    Returns a DataFrame with column names from the query result
+    """
     with get_etl_connection() as conn:
         with conn.cursor() as cursor:
             if isinstance(query, sql.SQL):

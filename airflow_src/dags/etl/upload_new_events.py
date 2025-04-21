@@ -20,6 +20,15 @@ shared_dir_path = configs['shared_dir_path']
 
 
 def upload_events_wrapper(shared_dir_path: str) -> None:
+    """Wrapper function for uploading events to the database
+    
+    params:
+    shared_dir_path - path to the directory containing event files
+    
+    The function:
+    1. Gets list of processed files
+    2. Uploads events from unprocessed files to the database
+    """
     processed_files = get_all_processed_files()
     upload_events(shared_dir_path, processed_files)
 

@@ -6,7 +6,15 @@ from configs import configs
 from repository import execute_statement_without_result, execute_statement_as_dataframe
 
 
-def run_fill_events_from_files_procedure(file_path: str, file_name: str):    
+def run_fill_events_from_files_procedure(file_path: str, file_name: str) -> None:
+    """Executes a stored procedure to load events from a CSV file into the database
+    
+    params:
+    file_path - full path to the CSV file
+    file_name - name of the CSV file
+    
+    Calls the etl.load_csv_file stored procedure with the provided parameters
+    """
     query = '''
         CALL etl.load_csv_file(%s, %s);
     '''
@@ -15,6 +23,13 @@ def run_fill_events_from_files_procedure(file_path: str, file_name: str):
 
 
 def get_last_row_dict(csv_file: str) -> dict:
+    """Retrieves the last row from a CSV file as a dictionary
+    
+    params:
+    csv_file - path to the CSV file
+    
+    Returns a dictionary where keys are column headers and values are from the last row
+    """
     headers = get_csv_headers(csv_file)
     with open(csv_file, "rb") as file:
         file.seek(-2, os.SEEK_END)
@@ -28,13 +43,33 @@ def get_last_row_dict(csv_file: str) -> dict:
 
 
 def get_csv_headers(csv_file: str) -> list:
+    """Gets the column headers from a CSV file
+    
+    params:
+    csv_file - path to the CSV file
+    
+    Returns a list of column headers
+    """
     with open(csv_file, "r", encoding="utf-8") as file:
         header = file.readline().strip().split(",")
 
     return header
 
 
-def write_events_to_csv(events, file_path, **context) -> None:
+def write_events_to_csv(events: list[tuple[str, str]], file_path: str, **context) -> None:
+    """Writes events to a CSV file with batch information
+    
+    params:
+    events - list of tuples containing (event_type, payload)
+    file_path - directory path where the CSV file will be created
+    context - dictionary containing Airflow context (must include 'run_id')
+    
+    Creates a CSV file with the following columns:
+    - batch_id: from context['run_id']
+    - event_type: type of the event
+    - payload: JSON string of event data
+    - batch_created_at: current timestamp
+    """
     batch_id = context['run_id']
     headers = ['batch_id', 'event_type', 'payload', 'batch_created_at']
     batch_created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -61,6 +96,10 @@ def write_events_to_csv(events, file_path, **context) -> None:
 
 
 def get_all_processed_files() -> list[str]:
+    """Retrieves list of all processed files from the database
+    
+    Returns a list of filenames that have been processed
+    """
     query = '''
         SELECT
             filename
@@ -72,7 +111,18 @@ def get_all_processed_files() -> list[str]:
 
     return processed_files
 
-def upload_events(data_dir: str, processed_files: list[str]):
+
+def upload_events(data_dir: str, processed_files: list[str]) -> None:
+    """Uploads unprocessed CSV files from a directory to the database
+    
+    params:
+    data_dir - directory containing CSV files to process
+    processed_files - list of filenames that have already been processed
+    
+    For each unprocessed CSV file:
+    1. Attempts to load it into the database
+    2. Prints success or error message
+    """
     for file in os.listdir(data_dir):
         if file.endswith('csv') and file not in processed_files:
             full_path = os.path.join(data_dir, file)
@@ -82,7 +132,17 @@ def upload_events(data_dir: str, processed_files: list[str]):
             except Exception as err:
                 print(f"Error processing {file}: {err}")
 
+
 def get_recipient(id: int) -> dict:
+    """Retrieves recipient configuration by ID
+    
+    params:
+    id - recipient identifier
+    
+    Returns a dictionary containing recipient configuration
+    
+    Raises ValueError if multiple recipients with the same ID are found
+    """
     try:
         recipient_config = [recipient for recipient in configs['recipients'] if recipient['id'] == id]
         if len(recipient_config) > 1:
@@ -93,7 +153,15 @@ def get_recipient(id: int) -> dict:
     except Exception as err:
         print(err)
 
+
 def get_recipients(ids: list[int]) -> dict:
+    """Retrieves multiple recipient configurations by their IDs
+    
+    params:
+    ids - list of recipient identifiers
+    
+    Returns a dictionary containing configurations for all requested recipients
+    """
     try:
         recipient_configs = [recipient for recipient in configs['recipients'] if recipient['id'] in ids]
         
