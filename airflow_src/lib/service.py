@@ -1,12 +1,11 @@
 import json
 from dotenv import load_dotenv
 import os
-import sys
 from pathlib import Path
 from datetime import datetime
 import csv
 from configs import configs
-from repository import execute_statement_without_result, execute_batch_insert, execute_statement_as_dataframe
+from repository import execute_statement_without_result, execute_statement_as_dataframe
 
 
 dotenv_path = Path(__file__).parent / ".env"
