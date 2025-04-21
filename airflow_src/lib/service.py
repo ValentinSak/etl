@@ -1,15 +1,9 @@
 import json
-from dotenv import load_dotenv
 import os
-from pathlib import Path
 from datetime import datetime
 import csv
 from configs import configs
 from repository import execute_statement_without_result, execute_statement_as_dataframe
-
-
-dotenv_path = Path(__file__).parent / ".env"
-load_dotenv(dotenv_path)
 
 
 def run_fill_events_from_files_procedure(file_path: str, file_name: str):    
@@ -40,7 +34,7 @@ def get_csv_headers(csv_file: str) -> list:
     return header
 
 
-def write_events_to_csv(events, file_path, **context):
+def write_events_to_csv(events, file_path, **context) -> None:
     batch_id = context['run_id']
     headers = ['batch_id', 'event_type', 'payload', 'batch_created_at']
     batch_created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

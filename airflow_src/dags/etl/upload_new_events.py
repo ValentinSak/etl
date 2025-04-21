@@ -6,6 +6,7 @@ from airflow import DAG
 from lib.service import upload_events, get_all_processed_files
 from lib.configs import configs
 
+
 dag_name = os.path.basename(__file__).replace('.py', '')
 default_args = {
     'start_date': datetime(2024, 1, 1),
@@ -18,7 +19,7 @@ pd.set_option('display.width', 1000)
 shared_dir_path = configs['shared_dir_path']
 
 
-def upload_events_wrapper(shared_dir_path):
+def upload_events_wrapper(shared_dir_path: str) -> None:
     processed_files = get_all_processed_files()
     upload_events(shared_dir_path, processed_files)
 

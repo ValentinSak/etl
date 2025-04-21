@@ -2,23 +2,24 @@ import psycopg2
 import os
 import pandas as pd
 from psycopg2 import sql
-from pathlib import Path
 from psycopg2.extras import execute_values
+from psycopg2.extensions import connection
+from typing import Any
 
 
-def get_etl_connection():
+def get_etl_connection() -> connection:
     conn_string = f'dbname={os.getenv("ETL_DB_NAME")} ' \
                   f'host={os.getenv("ETL_DB_HOST")} ' \
                   f'port={os.getenv("ETL_DB_PORT")} ' \
                   f'user={os.getenv("ETL_DB_USER")} ' \
                   f'password={os.getenv("ETL_DB_PASSWORD")}'
     print(conn_string)
-    connection = psycopg2.connect(conn_string)
+    conn = psycopg2.connect(conn_string)
 
-    return connection
+    return conn
 
 
-def execute_statement_without_result(query: str, params=None) -> None:
+def execute_statement_without_result(query: str, params: Any | None = None) -> None:
     with get_etl_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, params)
@@ -26,7 +27,7 @@ def execute_statement_without_result(query: str, params=None) -> None:
             conn.commit()
 
 
-def execute_batch_insert(query: str, values: list):
+def execute_batch_insert(query: str, values: list) -> None:
     with get_etl_connection() as conn:
         with conn.cursor() as cur:
             execute_values(cur, query, values)
@@ -34,7 +35,7 @@ def execute_batch_insert(query: str, values: list):
         conn.commit()
 
 
-def execute_statement_as_dataframe(query, params=None) -> pd.DataFrame:
+def execute_statement_as_dataframe(query: str | sql.SQL, params: Any | None = None) -> pd.DataFrame:
     with get_etl_connection() as conn:
         with conn.cursor() as cursor:
             if isinstance(query, sql.SQL):

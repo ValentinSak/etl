@@ -2,7 +2,8 @@ from lib.repository import execute_statement_as_dataframe
 from lib.messangers.slack import send_message, get_message
 import pandas as pd
 
-def store_sales_alert(recipients: list[dict], threshold):
+
+def store_sales_alert(recipients: list[dict], threshold: float) -> None:
     query = '''
         WITH 
             sales_data AS (
@@ -58,7 +59,7 @@ def store_sales_alert(recipients: list[dict], threshold):
     for recipient in recipients:
         print(f'message was sent to {recipient["id"]}')
 
-    # this is an example of creating message and send it with slack
+    # this is an example of creating message and sending it with slack
 
     # message = '/n'.join(df['message'].tolist())
     # slack_message = get_message(

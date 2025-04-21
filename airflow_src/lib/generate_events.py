@@ -8,7 +8,7 @@ from psycopg2 import sql
 import json
 
 
-def generate_random_string(length):
+def generate_random_string(length: int) -> str:
     return ''.join(random.choices(string.ascii_letters, k=length))
 
 
@@ -16,7 +16,7 @@ def get_random_ids_from_df(df: pd.DataFrame, column_name: str, n: int) -> list:
     return df[column_name].sample(n=n, replace=True).tolist()
 
 
-def get_values_from_column(schema_name: str, table_name: str, column_name: str):
+def get_values_from_column(schema_name: str, table_name: str, column_name: str) -> pd.DataFrame:
     query = sql.SQL(
         '''
             SELECT
@@ -33,7 +33,7 @@ def get_values_from_column(schema_name: str, table_name: str, column_name: str):
     return df
 
 
-def generate_order_event():
+def generate_order_event() -> str:
     event_data = {
         "created_at": (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
         "user_id": random.randint(1, 10001)
@@ -42,7 +42,7 @@ def generate_order_event():
     return json.dumps(event_data)
 
 
-def generate_product_event():
+def generate_product_event() -> str:
     event_data = {
         "created_at": (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
         "name": generate_random_string(random.randint(5, 10)),
@@ -52,7 +52,7 @@ def generate_product_event():
     return json.dumps(event_data)
 
 
-def generate_store_event():
+def generate_store_event() -> str:
     event_data = {
         "created_at": (datetime.now() - timedelta(minutes=random.randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S"),
         "name": generate_random_string(random.randint(5, 10)),
@@ -63,7 +63,7 @@ def generate_store_event():
     return json.dumps(event_data)
 
 
-def generate_sales_events(quantity: int) -> list:
+def generate_sales_events(quantity: int) -> list[tuple[str, str]]:
     order_ids_df = get_values_from_column('etl', 'orders', 'id')
     product_ids_df = get_values_from_column('etl', 'products', 'id')
     store_ids_df = get_values_from_column('etl', 'stores', 'id')
@@ -88,10 +88,11 @@ def generate_sales_events(quantity: int) -> list:
             }
             sales_events.append(("sales_event", json.dumps(event)))
             current_index += 1
+
     return sales_events
 
 
-def generate_events():
+def generate_events() -> list[tuple[str, str]]:
     store_events = [("store_event", generate_store_event()) for i in range(2)]
     product_events = [("product_event", generate_product_event()) for i in range(2)]
     order_events = [("order_event", generate_order_event()) for i in range(10)]
