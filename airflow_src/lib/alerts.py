@@ -53,7 +53,7 @@ def store_sales_alert(recipients: list[dict], threshold):
 
     df = df[df['percent_difference'] <= threshold]
     
-    df['message'] = df.apply(lambda row: get_store_sales_message(row))
+    df['message'] = df.apply(lambda row: get_store_sales_message(row), axis=1)
 
     for recipient in recipients:
         print(f'message was sent to {recipient["id"]}')
