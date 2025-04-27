@@ -4,7 +4,7 @@ from datetime import datetime
 from airflow.operators.python import PythonOperator
 from airflow import DAG
 from lib.service import write_events_to_csv
-from lib.generate_events import generate_events
+from lib.generate_events.generate_events import generate_events
 from lib.configs import configs
 
 dag_name = os.path.basename(__file__).replace('.py', '')

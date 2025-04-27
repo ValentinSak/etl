@@ -4,7 +4,7 @@ from datetime import datetime
 from airflow.operators.python import PythonOperator
 from airflow import DAG
 from lib.service import get_recipients
-from lib.alerts import store_sales_alert
+from lib.alerts.alerts import store_sales_alert
 from lib.configs import configs
 
 
