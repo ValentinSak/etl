@@ -169,3 +169,4 @@ def get_recipients(ids: list[int]) -> dict:
     
     except Exception as err:
         print(err)
+        
