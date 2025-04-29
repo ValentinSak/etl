@@ -25,3 +25,4 @@ ignore = ["F401", "E501", "F541"]
 
 [tool.ruff.format]
 quote-style = "single"
+docstring-quotes = "single"
