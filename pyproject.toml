@@ -24,4 +24,5 @@ ignore = ["F401", "E501", "F541"]
 "__init__.py" = ["F401"]
 
 [tool.black]
-string-normalization = false 
+[tool.ruff.format]
+quote-style = "single"
