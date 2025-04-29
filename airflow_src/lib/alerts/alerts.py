@@ -4,7 +4,8 @@ import pandas as pd
 
 
 def store_sales_alert(recipients: list[dict], threshold: float) -> None:
-    """Analyzes store sales data and sends alerts for stores with significant sales decreases
+    """Analyzes store sales data and sends alerts for stores with 
+    significant sales decreases
     
     params:
     recipients - list of dictionaries containing recipient information
@@ -36,10 +37,18 @@ def store_sales_alert(recipients: list[dict], threshold: float) -> None:
             aggregated_sales_data AS  (
                 SELECT 
                     store_name,
-                    AVG(SUM(total_amount)) OVER (PARTITION BY store_name ORDER BY sale_date ROWS BETWEEN 7 PRECEDING AND 1 PRECEDING) AS seven_days_avg_amount,
+                    AVG(
+                        SUM(total_amount)
+                        ) OVER (
+                            PARTITION BY store_name 
+                            ORDER BY sale_date 
+                            ROWS BETWEEN 7 PRECEDING AND 1 PRECEDING
+                    ) AS seven_days_avg_amount,
                     (SELECT 
                         SUM(total_amount) FROM sales_data
-                    WHERE store_name = sd.store_name AND sale_date = now()::DATE - INTERVAL '1 day') AS yesterday_amount
+                    WHERE 1 = 1
+                    AND store_name = sd.store_name 
+                    AND sale_date = now()::DATE - INTERVAL '1 day') AS yesterday_amount
                 FROM sales_data sd
                 GROUP BY store_name, sale_date
             )
