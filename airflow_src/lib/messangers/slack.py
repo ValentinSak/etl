@@ -2,7 +2,7 @@ import requests
 
 
 def send_message(recipient: dict, message: dict) -> None:
-    '''Sends a message to a Slack recipient using appropriate method based on recipient type
+    """Sends a message to a Slack recipient using appropriate method based on recipient type
 
     params:
     recipient - dictionary containing recipient information:
@@ -14,7 +14,7 @@ def send_message(recipient: dict, message: dict) -> None:
     message - dictionary containing the message to send
 
     Raises ValueError if recipient type is not supported
-    '''
+    """
     if recipient['type_channel'] == 'channel':
         send_message_to_channel(recipient['url'], message)
     elif recipient['type_channel'] == 'direct_message':
@@ -25,14 +25,14 @@ def send_message(recipient: dict, message: dict) -> None:
 
 
 def send_message_to_channel(webhook_url: str, message: dict) -> None:
-    '''Sends a message to a Slack channel using webhook
+    """Sends a message to a Slack channel using webhook
 
     params:
     webhook_url - Slack webhook url for the channel
     message - dictionary containing the message to send
 
     Raises ValueError if message sending fails
-    '''
+    """
     response = requests.post(webhook_url, json=message)
     if response.ok:
         print('Message send successfuly')
@@ -44,7 +44,7 @@ def send_message_to_channel(webhook_url: str, message: dict) -> None:
 
 
 def send_message_with_bot(token: str, channel: str, message: dict) -> None:
-    '''Sends a direct message using Slack bot token
+    """Sends a direct message using Slack bot token
 
     params:
     token - Slack bot authentication token
@@ -52,7 +52,7 @@ def send_message_with_bot(token: str, channel: str, message: dict) -> None:
     message - dictionary containing the message to send
 
     Raises ValueError if message sending fails
-    '''
+    """
     url = 'https://salck.com/api/chat.postMessage'
     headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
     message['channel'] = channel
@@ -67,7 +67,7 @@ def send_message_with_bot(token: str, channel: str, message: dict) -> None:
 
 
 def get_message(header: str, message: str) -> dict:
-    '''Creates a formatted Slack message with header and content
+    """Creates a formatted Slack message with header and content
 
     params:
     header - text to display as message header
@@ -77,7 +77,7 @@ def get_message(header: str, message: str) -> dict:
     - header block with provided header text
     - divider
     - section block with markdown-formatted message
-    '''
+    """
     slack_message = {
         'blocks': [
             {'type': 'header', 'text': {'type': 'plain_text', 'text': f'{header}'}},

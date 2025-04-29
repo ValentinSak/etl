@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def store_sales_alert(recipients: list[dict], threshold: float) -> None:
-    '''Analyzes store sales data and sends alerts for stores with
+    """Analyzes store sales data and sends alerts for stores with
     significant sales decreases
 
     params:
@@ -16,8 +16,8 @@ def store_sales_alert(recipients: list[dict], threshold: float) -> None:
     2. Calculates average sales and yesterday's sales for each store
     3. Identifies stores with sales decrease below the threshold
     4. Generates alert messages for affected stores
-    '''
-    query = '''
+    """
+    query = """
         WITH 
             sales_data AS (
                 SELECT 
@@ -66,7 +66,7 @@ def store_sales_alert(recipients: list[dict], threshold: float) -> None:
                         NULLIF(seven_days_avg_amount, 0) * 100)
                 END AS percent_difference
             FROM aggregated_sales_data
-    '''
+    """
     print(query)
     df = execute_statement_as_dataframe(query)
 
@@ -93,11 +93,11 @@ def store_sales_alert(recipients: list[dict], threshold: float) -> None:
 
 
 def get_store_sales_message(row: pd.Series) -> str:
-    '''Generates a formatted message for store sales alert
+    """Generates a formatted message for store sales alert
 
     params:
     row - pandas Series containing store sales data
 
     Returns a string message with store name and sales decrease percentage
-    '''
+    """
     return f'Shop {row.store_name} sales decreased by {row.percent_difference}%'
