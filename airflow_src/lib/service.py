@@ -164,8 +164,6 @@ def get_recipients(ids: list[int]) -> dict:
     """
     try:
         recipient_configs = [recipient for recipient in configs['recipients'] if recipient['id'] in ids]
-        
         return recipient_configs
-    
     except Exception as err:
         print(err)
