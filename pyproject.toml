@@ -21,4 +21,7 @@ ignore = ["F401", "E501", "F541"]
 
 [tool.ruff.lint.per-file-ignores]
 # Ignore unused imports in `__init__.py` files.
-"__init__.py" = ["F401"] 
+"__init__.py" = ["F401"]
+
+[tool.black]
+string-normalization = false 
