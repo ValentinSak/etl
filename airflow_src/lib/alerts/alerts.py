@@ -4,19 +4,19 @@ import pandas as pd
 
 
 def store_sales_alert(recipients: list[dict], threshold: float) -> None:
-    """Analyzes store sales data and sends alerts for stores with 
+    '''Analyzes store sales data and sends alerts for stores with
     significant sales decreases
-    
+
     params:
     recipients - list of dictionaries containing recipient information
     threshold - percentage threshold for sales decrease to trigger alert
-    
+
     The function:
     1. Queries sales data for the last 7 days
     2. Calculates average sales and yesterday's sales for each store
     3. Identifies stores with sales decrease below the threshold
     4. Generates alert messages for affected stores
-    """
+    '''
     query = '''
         WITH 
             sales_data AS (
@@ -74,7 +74,7 @@ def store_sales_alert(recipients: list[dict], threshold: float) -> None:
         return
 
     df = df[df['percent_difference'] <= threshold]
-    
+
     df['message'] = df.apply(lambda row: get_store_sales_message(row), axis=1)
 
     for recipient in recipients:
@@ -87,17 +87,17 @@ def store_sales_alert(recipients: list[dict], threshold: float) -> None:
     #     header='stores with',
     #     message=message
     # )
-    
+
     # for recipient in recipients:
     #     send_message(recipient, slack_message)
 
 
 def get_store_sales_message(row: pd.Series) -> str:
-    """Generates a formatted message for store sales alert
-    
+    '''Generates a formatted message for store sales alert
+
     params:
     row - pandas Series containing store sales data
-    
+
     Returns a string message with store name and sales decrease percentage
-    """
+    '''
     return f'Shop {row.store_name} sales decreased by {row.percent_difference}%'

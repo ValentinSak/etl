@@ -21,22 +21,18 @@ recipients = get_recipients([1, 2])
 threshold = configs['thresholds'][store_sales_alert.__name__]
 
 with DAG(
-        dag_name,
-        default_args=default_args,
-        description='etl fill main tables from events table',
-        start_date=datetime(2024, 1, 1),
-        schedule_interval='0 9 * * *',
-        catchup=False,
-        max_active_runs=1,
-        tags=[
-            'alert',
-            'store_sales'
-        ]
+    dag_name,
+    default_args=default_args,
+    description='etl fill main tables from events table',
+    start_date=datetime(2024, 1, 1),
+    schedule_interval='0 9 * * *',
+    catchup=False,
+    max_active_runs=1,
+    tags=['alert', 'store_sales'],
 ) as dag:
     PythonOperator(
         task_id=store_sales_alert.__name__,
         python_callable=store_sales_alert,
         op_args=[recipients, threshold],
-        dag=dag
+        dag=dag,
     )
-

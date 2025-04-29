@@ -7,7 +7,7 @@ from lib.service import upload_events, get_all_processed_files
 from lib.configs import configs
 
 
-dag_name = os.path.basename(__file__).replace(".py", "")
+dag_name = os.path.basename(__file__).replace('.py', '')
 default_args = {
     'start_date': datetime(2024, 1, 1),
 }
@@ -20,7 +20,7 @@ shared_dir_path = configs['shared_dir_path']
 
 
 def upload_events_wrapper(shared_dir_path: str) -> None:
-    '''Wrapper function for uploading events to the database
+    """Wrapper function for uploading events to the database
 
     params:
     shared_dir_path - path to the directory containing event files
@@ -28,7 +28,7 @@ def upload_events_wrapper(shared_dir_path: str) -> None:
     The function:
     1. Gets list of processed files
     2. Uploads events from unprocessed files to the database
-    '''
+    """
     processed_files = get_all_processed_files()
     upload_events(shared_dir_path, processed_files)
 
