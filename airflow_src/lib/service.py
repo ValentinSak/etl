@@ -168,5 +168,4 @@ def get_recipients(ids: list[int]) -> dict:
         return recipient_configs
     
     except Exception as err:
-        print(err)
-        
+        print(err)\
